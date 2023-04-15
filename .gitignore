@@ -1,0 +1,8 @@
+# Ignore KiCAD backups and autosaves
+*.bak
+*.bck
+*.kicad_pcb-bak
+*.sch-bak
+*/*-backups/
+_autosave*
+*~
