@@ -45,7 +45,7 @@
         "silk_text_thickness": 0.15,
         "silk_text_upright": false,
         "zones": {
-          "min_clearance": 0.5
+          "min_clearance": 0.254
         }
       },
       "diff_pair_dimensions": [
@@ -111,21 +111,21 @@
       },
       "rules": {
         "max_error": 0.005,
-        "min_clearance": 0.2032,
+        "min_clearance": 0.125,
         "min_connection": 0.0,
-        "min_copper_edge_clearance": 0.0,
+        "min_copper_edge_clearance": 0.3,
         "min_hole_clearance": 0.25,
         "min_hole_to_hole": 0.25,
         "min_microvia_diameter": 0.19999999999999998,
         "min_microvia_drill": 0.09999999999999999,
-        "min_resolved_spokes": 2,
+        "min_resolved_spokes": 1,
         "min_silk_clearance": 0.0,
         "min_text_height": 0.7999999999999999,
         "min_text_thickness": 0.08,
-        "min_through_hole_diameter": 0.3,
-        "min_track_width": 0.2032,
-        "min_via_annular_width": 0.09999999999999999,
-        "min_via_diameter": 0.5,
+        "min_through_hole_diameter": 0.19999999999999998,
+        "min_track_width": 0.125,
+        "min_via_annular_width": 0.19999999999999998,
+        "min_via_diameter": 0.6,
         "solder_mask_clearance": 0.0,
         "solder_mask_min_width": 0.0,
         "solder_mask_to_copper_clearance": 0.0,
@@ -185,12 +185,12 @@
           "drill": 0.0
         },
         {
-          "diameter": 0.2,
-          "drill": 0.4
+          "diameter": 0.4,
+          "drill": 0.2
         },
         {
-          "diameter": 0.3,
-          "drill": 0.6
+          "diameter": 0.6,
+          "drill": 0.2
         }
       ],
       "zones_allow_external_fillets": false
@@ -505,6 +505,10 @@
     [
       "90da9009-635c-418a-81cf-a9914c9a139e",
       ""
+    ],
+    [
+      "9419ad98-79f0-4351-b1d9-8c8bd448ddbc",
+      "PowerBoard"
     ],
     [
       "8f83cd13-e5fd-4817-b0b2-dd649562e12d",
