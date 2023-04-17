@@ -1,5 +1,4 @@
 #define CAL_BUTTON 16
-#define MAX_BUTTON 17
 
 #define BRIGHTNESS_PIN 13
 #define PWM_CHAN 0
