@@ -3,6 +3,8 @@
 *.bck
 *.kicad_pcb-bak
 *.sch-bak
+*.kicad_prl
 *PCB/*/*-backups/
 _autosave*
+*/#auto_saved_files#
 *~
