@@ -1253,7 +1253,6 @@
     )
   )
 
-
   (junction (at 302.26 39.37) (diameter 0) (color 0 0 0 0)
     (uuid 0c1128df-612d-4e4c-9feb-578f6b562482)
   )
@@ -2880,13 +2879,13 @@
     )
   )
 
-  (symbol (lib_id "Device:Crystal_Small") (at 64.77 171.45 270) (unit 1)
+  (symbol (lib_id "Device:Crystal_Small") (at 64.77 171.45 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 2ebf585e-fc5f-444a-b720-bcb330d49404)
-    (property "Reference" "Y1" (at 62.23 170.815 90)
+    (property "Reference" "Y1" (at 67.31 170.815 90)
       (effects (font (size 1.27 1.27)) (justify right))
     )
-    (property "Value" "32.768KHz" (at 62.23 173.355 90)
+    (property "Value" "32.768KHz" (at 67.31 173.355 90)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Footprint" "Crystal:Crystal_C38-LF_D3.0mm_L8.0mm_Horizontal" (at 64.77 171.45 0)
