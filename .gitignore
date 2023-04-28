@@ -4,7 +4,7 @@
 *.kicad_pcb-bak
 *.sch-bak
 *.kicad_prl
-*PCB/*/*-backups/
+/*/*-backups/
 _autosave*
 */#auto_saved_files#
 *~
