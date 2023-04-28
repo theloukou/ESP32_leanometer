@@ -55,7 +55,26 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [],
+      "drc_exclusions": [
+        "courtyards_overlap|176517001|97796001|8ccb9592-82f5-461b-979a-98366b9b291d|8fa68229-1bb7-4545-a6d7-6fa9efb5382f",
+        "courtyards_overlap|176541501|101342001|6a4287c1-ddda-4012-a68d-ff6f0890d013|e875ed5b-b60f-4e90-80d9-e8d24ea3189d",
+        "courtyards_overlap|176541501|108962001|6a4287c1-ddda-4012-a68d-ff6f0890d013|722bcd82-f0d2-4f80-8fb9-d72fdbde378d",
+        "courtyards_overlap|176541501|111502001|6a4287c1-ddda-4012-a68d-ff6f0890d013|c99c1ada-fa11-4049-b32a-9ffb32214b1c",
+        "courtyards_overlap|176541501|87636001|8ccb9592-82f5-461b-979a-98366b9b291d|aa23c41d-86be-48b2-81cc-5a949641b7c4",
+        "courtyards_overlap|176541501|95256001|8ccb9592-82f5-461b-979a-98366b9b291d|dfc32086-26d7-40f5-b449-4f2908256cf5",
+        "courtyards_overlap|176979001|90176001|573513d9-9569-476d-8c5c-b3833c08b453|8ccb9592-82f5-461b-979a-98366b9b291d",
+        "courtyards_overlap|176982001|103882001|2ba22fff-dde8-4dbe-89d5-da0d84bf6fb1|6a4287c1-ddda-4012-a68d-ff6f0890d013",
+        "courtyards_overlap|184669501|101342001|6a4287c1-ddda-4012-a68d-ff6f0890d013|d2aad438-da2f-4c1d-ac28-f8bf777fcdf8",
+        "courtyards_overlap|184669501|103882001|6a4287c1-ddda-4012-a68d-ff6f0890d013|6e9838c6-87b6-4375-b1ea-0a4ef5a0e6c2",
+        "courtyards_overlap|184669501|108962001|1208a87f-4198-4e06-a6bf-b498fa45dce7|6a4287c1-ddda-4012-a68d-ff6f0890d013",
+        "courtyards_overlap|184669501|111502001|6a4287c1-ddda-4012-a68d-ff6f0890d013|db5de516-a4b6-482b-8cec-36c545d00f7a",
+        "courtyards_overlap|184669501|87636001|37eae451-76be-4ae4-8a10-73bf33c4635b|8ccb9592-82f5-461b-979a-98366b9b291d",
+        "courtyards_overlap|184669501|90176001|6e51395d-2683-4f60-b84c-6f326d1b52be|8ccb9592-82f5-461b-979a-98366b9b291d",
+        "courtyards_overlap|184669501|95256001|858c5298-b68d-4599-ae1b-b60f178b710f|8ccb9592-82f5-461b-979a-98366b9b291d",
+        "courtyards_overlap|184669501|97796001|4662e078-5a0b-42f9-9081-434822674c16|8ccb9592-82f5-461b-979a-98366b9b291d",
+        "unconnected_items|148590000|84266000|92a60c71-9b3c-4c8f-98db-698508fde9a5|d67507ba-7014-498e-acc9-24dca8da5a4d",
+        "unconnected_items|148590000|84266000|f30baec8-f543-4b3c-bf48-657bbc6907a2|d67507ba-7014-498e-acc9-24dca8da5a4d"
+      ],
       "meta": {
         "version": 2
       },
