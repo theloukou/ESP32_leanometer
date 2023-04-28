@@ -1,12 +1,12 @@
 %TF.GenerationSoftware,KiCad,Pcbnew,7.0.1*%
-%TF.CreationDate,2023-04-28T19:57:16+03:00*%
+%TF.CreationDate,2023-04-28T21:22:04+03:00*%
 %TF.ProjectId,leanometer_esp32,6c65616e-6f6d-4657-9465-725f65737033,R1*%
 %TF.SameCoordinates,Original*%
 %TF.FileFunction,Soldermask,Bot*%
 %TF.FilePolarity,Negative*%
 %FSLAX46Y46*%
 G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
-G04 Created by KiCad (PCBNEW 7.0.1) date 2023-04-28 19:57:16*
+G04 Created by KiCad (PCBNEW 7.0.1) date 2023-04-28 21:22:04*
 %MOMM*%
 %LPD*%
 G01*
@@ -122,8 +122,8 @@ X160020000Y-116205000D03*
 %TD*%
 D17*
 %TO.C,R7*%
-X130238000Y-94615000D03*
 X128588000Y-94615000D03*
+X130238000Y-94615000D03*
 %TD*%
 D18*
 %TO.C,R5*%
@@ -183,8 +183,8 @@ X187262000Y-98746000D03*
 %TD*%
 D17*
 %TO.C,R8*%
-X130238000Y-92837000D03*
 X128588000Y-92837000D03*
+X130238000Y-92837000D03*
 %TD*%
 D27*
 %TO.C,C4*%
