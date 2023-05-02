@@ -3,9 +3,9 @@
 #include "SD.h"
 #include "SPI.h"
 #include "Preferences.h"
-#include "libs/ShiftRegister74HC595.h"
-#include "libs/I2Cdev.h"
-#include "libs/MPU6050_6Axis_MotionApps612.h"
+#include "ShiftRegister74HC595.h"
+#include "I2Cdev.h"
+#include "MPU6050_6Axis_MotionApps612.h"
 #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
 #include "Wire.h"
 #endif
