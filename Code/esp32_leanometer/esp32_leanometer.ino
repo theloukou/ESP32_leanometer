@@ -3,10 +3,9 @@
 #include "SD.h"
 #include "SPI.h"
 #include "Preferences.h"
-#include "ShiftRegister74HC595.h"
-#include "I2Cdev.h"
-#include "EEPROM.h"
-#include "MPU6050_6Axis_MotionApps612.h"
+#include "libs/ShiftRegister74HC595.h"
+#include "libs/I2Cdev.h"
+#include "libs/MPU6050_6Axis_MotionApps612.h"
 #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
 #include "Wire.h"
 #endif
@@ -54,10 +53,8 @@ void setup() {
   Serial.begin(115200);
 
   pinMode(CAL_BUTTON, INPUT_PULLUP);
-  pinMode(MAX_BUTTON, INPUT_PULLUP);
   pinMode(BRIGHTNESS_PIN, OUTPUT);
   attachInterrupt(digitalPinToInterrupt(CAL_BUTTON), calButton, FALLING);
-  attachInterrupt(digitalPinToInterrupt(MAX_BUTTON), maxButton, FALLING);
 
   ledcSetup(PWM_CHAN, PWM_FREQ, PWM_RES);
   ledcAttachPin(BRIGHTNESS_PIN, PWM_CHAN);
@@ -99,5 +96,4 @@ void loop() {
   brightness();
 
   calCheck();
-  maxCheck();
 }
