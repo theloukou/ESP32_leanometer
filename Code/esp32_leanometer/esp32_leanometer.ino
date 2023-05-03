@@ -22,9 +22,13 @@ uint16_t IMUfifoCount;     // count of all bytes currently in FIFO
 uint8_t IMUfifoBuffer[64]; // FIFO storage buffer
 
 // orientation/motion vars
-Quaternion IMUq;               // [w, x, y, z] quaternion container
-VectorFloat IMUgravity;        // [x, y, z]  gravity vector
-float IMUypr[3] = {0, 0, 0};   // [yaw, pitch, roll] yaw/pitch/roll container and gravity vector
+Quaternion IMUq;              // [w, x, y, z] quaternion container
+VectorInt16 IMUaa;            // [x, y, z] accel sensor measurements
+VectorInt16 IMUgy;            // [x, y, z] gyro sensor measurements
+VectorInt16 IMUaaReal;        // [x, y, z] gravity-free accel sensor measurements
+VectorInt16 IMUaaWorld;       // [x, y, z] world-frame accel sensor measurements
+VectorFloat IMUgravity;       // [x, y, z] gravity vector
+float IMUypr[3] = {0, 0, 0};  // [yaw, pitch, roll] yaw/pitch/roll container and gravity vector
 
 int xAccelOffset, yAccelOffset, zAccelOffset, xGyroOffset, yGyroOffset, zGyroOffset;
 String serialStr;
@@ -91,7 +95,7 @@ void loop() {
   // if IMU programming failed, don't try to do anything
   if (!IMUReady) return;  //halt if MPU is missing
 
-  IMUdata();
+  IMUangles();
   //  Serial.println(angle);
   updateDisp(abs(angle));
 
