@@ -1,3 +1,5 @@
+#define SERIAL_DEBUG
+
 #define CAL_BUTTON 16
 
 #define BRIGHTNESS_PIN 13

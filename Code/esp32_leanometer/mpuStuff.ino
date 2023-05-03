@@ -3,7 +3,9 @@ void IMUsetup() {
   IMU.initialize();
 
   // verify connection
+#ifdef SERIAL_DEBUG
   Serial.println(IMU.testConnection() ? F("IMU connection successful") : F("IMU connection failed"));
+#endif
 
   // load and configure the DMP
   IMUdevStatus = IMU.dmpInitialize();
@@ -23,7 +25,9 @@ void IMUsetup() {
     IMU.setDMPEnabled(true);
 
     // set our DMP Ready flag so the main loop() function knows it's okay to use it
+#ifdef SERIAL_DEBUG
     Serial.println(F("IMU DMP ready!"));
+#endif
     IMUReady = true;
 
     // get expected DMP packet size for later comparison
@@ -33,14 +37,18 @@ void IMUsetup() {
     // 1 = initial memory load failed
     // 2 = DMP configuration updates failed
     // (if it's going to break, usually the code will be 1)
+#ifdef SERIAL_DEBUG
     Serial.print(F("IMU DMP Initialization failed (code "));
     Serial.print(IMUdevStatus);
     Serial.println(F(")"));
+#endif
   }
 }
 
 void IMUcalibration() {
+#ifdef SERIAL_DEBUG
   Serial.println("Calibrating");
+#endif
   delay(3000);
   IMU.CalibrateAccel(6);
   IMU.CalibrateGyro(6);
@@ -57,7 +65,9 @@ void IMUdata() {
   if (IMUfifoCount >= 1024) {
     // reset so we can continue cleanly
     IMU.resetFIFO();
+#ifdef SERIAL_DEBUG
     Serial.println(F("IMU FIFO overflow!"));
+#endif
   }
   // otherwise, check for DMP data ready interrupt (this should happen frequently)
   else if (IMUfifoCount >= 42) {

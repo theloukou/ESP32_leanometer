@@ -49,12 +49,16 @@ void setup() {
   disp.setAllLow();
 #endif
 
+#ifdef SERIAL_DEBUG
   serialStr.reserve(40);
   Serial.begin(115200);
+#endif
 
   pinMode(CAL_BUTTON, INPUT_PULLUP);
   pinMode(BRIGHTNESS_PIN, OUTPUT);
+  pinMode(SD_DET,INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(CAL_BUTTON), calButton, FALLING);
+  attachInterrupt(digitalPinToInterrupt(SD_DET), sdDetection, FALLING);
 
   ledcSetup(PWM_CHAN, PWM_FREQ, PWM_RES);
   ledcAttachPin(BRIGHTNESS_PIN, PWM_CHAN);
@@ -73,7 +77,9 @@ void setup() {
   //initialize SD
   sdInit();
 
+#ifdef SERIAL_DEBUG
   Serial.println("Ready!");
+#endif
 
   ledcWrite(PWM_CHAN, 25);
 
