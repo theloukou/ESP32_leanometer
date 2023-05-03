@@ -60,7 +60,7 @@ void setup() {
 
   pinMode(CAL_BUTTON, INPUT_PULLUP);
   pinMode(BRIGHTNESS_PIN, OUTPUT);
-  pinMode(SD_DET,INPUT_PULLUP);
+  pinMode(SD_DET, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(CAL_BUTTON), calButton, FALLING);
   attachInterrupt(digitalPinToInterrupt(SD_DET), sdDetection, FALLING);
 
@@ -69,7 +69,7 @@ void setup() {
 
   // initialize EEPROM with predefined size
   prefs.begin(PREF_NAMESPACE, false);
-  eeprom_get();
+  eepromGet();
 
   // join I2C bus (I2Cdev library doesn't do this automatically)
   Wire.begin();

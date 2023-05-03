@@ -52,12 +52,14 @@ void IMUcalibration() {
   delay(3000);
   IMU.CalibrateAccel(6);
   IMU.CalibrateGyro(6);
+#ifdef SERIAL_DEBUG
   IMU.PrintActiveOffsets();
-  eeprom_put();
+#ifdef
+  eepromPut();
 }
 
 //get IMU data
-void IMUdata(){
+void IMUdata() {
   // get current IMU FIFO count
   IMUfifoCount = IMU.getFIFOCount();
 
@@ -70,7 +72,7 @@ void IMUdata(){
 #endif
   }
   // otherwise, check for DMP data ready interrupt (this should happen frequently)
-  else if (IMUfifoCount >= 42){
+  else if (IMUfifoCount >= 42) {
     // read a packet from FIFO
     IMU.getFIFOBytes(IMUfifoBuffer, IMUpacketSize);
   }
@@ -79,11 +81,11 @@ void IMUdata(){
 //calculate needed angles
 void IMUangles() {
   IMUdata();
-  
-    // calculate Euler angles in degrees
-    IMU.dmpGetQuaternion(&IMUq, IMUfifoBuffer);
-    IMU.dmpGetGravity(&IMUgravity, &IMUq);
-    IMU.dmpGetYawPitchRoll(IMUypr, &IMUq, &IMUgravity);
+
+  // calculate Euler angles in degrees
+  IMU.dmpGetQuaternion(&IMUq, IMUfifoBuffer);
+  IMU.dmpGetGravity(&IMUgravity, &IMUq);
+  IMU.dmpGetYawPitchRoll(IMUypr, &IMUq, &IMUgravity);
 
   //get desired used angles
   angle = IMUypr[2] * 180 / M_PI;
@@ -92,17 +94,17 @@ void IMUangles() {
 //calculate g-forces
 void IMUgforces() {
   IMUdata();
-  
+
   // display initial world-frame acceleration, adjusted to remove gravity and rotated based on known orientation from quaternion
-    IMU.dmpGetQuaternion(&IMUq, IMUfifoBuffer);
-    IMU.dmpGetAccel(&IMUaa, IMUfifoBuffer);
-    IMU.dmpGetGravity(&IMUgravity, &IMUq);
-    IMU.dmpGetLinearAccel(&IMUaaReal, &IMUaa, &IMUgravity);
-    IMU.dmpGetLinearAccelInWorld(&IMUaaWorld, &IMUaaReal, &IMUq);
-    Serial.print("aworld\t");
-    Serial.print(IMUaaWorld.x);
-    Serial.print("\t");
-    Serial.print(IMUaaWorld.y);
-    Serial.print("\t");
-    Serial.println(IMUaaWorld.z);
+  IMU.dmpGetQuaternion(&IMUq, IMUfifoBuffer);
+  IMU.dmpGetAccel(&IMUaa, IMUfifoBuffer);
+  IMU.dmpGetGravity(&IMUgravity, &IMUq);
+  IMU.dmpGetLinearAccel(&IMUaaReal, &IMUaa, &IMUgravity);
+  IMU.dmpGetLinearAccelInWorld(&IMUaaWorld, &IMUaaReal, &IMUq);
+  Serial.print("aworld\t");
+  Serial.print(IMUaaWorld.x);
+  Serial.print("\t");
+  Serial.print(IMUaaWorld.y);
+  Serial.print("\t");
+  Serial.println(IMUaaWorld.z);
 }
