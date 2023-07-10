@@ -29,3 +29,7 @@
 //#define CC_7SDU
 
 #define PREF_NAMESPACE "IMUoffsets"
+
+/// OTA 
+//#define SSID "Leanometer_AP"
+// #define PASSWORD "yoyoyoyo"
