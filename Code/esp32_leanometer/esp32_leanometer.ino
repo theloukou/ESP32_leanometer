@@ -29,9 +29,19 @@ uint16_t IMUfifoCount;      // count of all bytes currently in FIFO
 uint8_t IMUfifoBuffer[64];  // FIFO storage buffer
 
 // orientation/motion vars
+<<<<<<< HEAD
+Quaternion IMUq;              // [w, x, y, z] quaternion container
+VectorInt16 IMUaa;            // [x, y, z] accel sensor measurements
+VectorInt16 IMUgy;            // [x, y, z] gyro sensor measurements
+VectorInt16 IMUaaReal;        // [x, y, z] gravity-free accel sensor measurements
+VectorInt16 IMUaaWorld;       // [x, y, z] world-frame accel sensor measurements
+VectorFloat IMUgravity;       // [x, y, z] gravity vector
+float IMUypr[3] = {0, 0, 0};  // [yaw, pitch, roll] yaw/pitch/roll container and gravity vector
+=======
 Quaternion IMUq;                // [w, x, y, z] quaternion container
 VectorFloat IMUgravity;         // [x, y, z]  gravity vector
 float IMUypr[3] = { 0, 0, 0 };  // [yaw, pitch, roll] yaw/pitch/roll container and gravity vector
+>>>>>>> 9cb41c3ee214d868aed4f6ce427fa6df09b4be5f
 
 int xAccelOffset, yAccelOffset, zAccelOffset, xGyroOffset, yGyroOffset, zGyroOffset;
 String serialStr;
@@ -72,7 +82,7 @@ void setup() {
 
   // initialize EEPROM with predefined size
   prefs.begin(PREF_NAMESPACE, false);
-  eeprom_get();
+  eepromGet();
 
   initWiFi();
 
@@ -101,7 +111,7 @@ void loop() {
   AsyncElegantOTA.loop();
   if (!IMUReady) return;  //halt if MPU is missing
 
-  IMUdata();
+  IMUangles();
   //  Serial.println(angle);
   updateDisp(abs(angle));
 

@@ -1,4 +1,4 @@
-void eeprom_get() {
+void eepromGet() {
   xAccelOffset = prefs.getShort("xAccelOffset", 0);
   yAccelOffset = prefs.getShort("yAccelOffset", 0);
   zAccelOffset = prefs.getShort("zAccelOffset", 0);
@@ -7,7 +7,7 @@ void eeprom_get() {
   zGyroOffset = prefs.getShort("zGyroOffset", 0);
 }
 
-void eeprom_put() {
+void eepromPut() {
   prefs.putShort("xAccelOffset", IMU.getXAccelOffset());
   prefs.putShort("yAccelOffset", IMU.getYAccelOffset());
   prefs.putShort("zAccelOffset", IMU.getZAccelOffset());

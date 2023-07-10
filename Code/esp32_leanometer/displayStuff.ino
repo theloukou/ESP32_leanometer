@@ -1,6 +1,6 @@
 int lsdigit, msdigit;
-unsigned int ldr_value;
-byte bright_value;
+unsigned int ldrValue;
+byte brightValue;
 
 //common anode 7sdu
 #ifdef CA_7SDU
@@ -64,18 +64,18 @@ void blinkDisp(char times) {
 }
 
 void brightness() {
-  ldr_value = (analogRead(LDR));
-  if (ldr_value <= LDR_MIN_THRES) {
-    bright_value = 10;
+  ldrValue = (analogRead(LDR));
+  if (ldrValue <= LDR_MIN_THRES) {
+    brightValue = 10;
   }
-  else if (ldr_value <= LDR_MAX_THRES) {
-    bright_value = map(ldr_value, LDR_MIN_THRES+1, LDR_MAX_THRES, 11, 255);
+  else if (ldrValue <= LDR_MAX_THRES) {
+    brightValue = map(ldrValue, LDR_MIN_THRES+1, LDR_MAX_THRES, 11, 255);
   }
   else {
     bright_value = 255;
   }
-  ledcWrite(PWM_CHAN, bright_value);
-//  Serial.print(ldr_value);
+  ledcWrite(PWM_CHAN, brightValue);
+//  Serial.print(ldrValue);
 //  Serial.print("\t");
-//  Serial.println(bright_value);
+//  Serial.println(brightValue);
 }
