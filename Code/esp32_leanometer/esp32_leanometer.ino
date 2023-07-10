@@ -10,21 +10,28 @@
 #include "Wire.h"
 #endif
 
+#include <WiFi.h>
+#include <ESPAsyncWebServer.h>
+#include <AsyncElegantOTA.h>
+AsyncWebServer server(80);
+const char* ssid = "Leanometer_AP";
+const char* password = "1234567890";
+
 ShiftRegister74HC595<2> disp(SHIFT_REG_DATA, SHIFT_REG_CLOCK, SHIFT_REG_LATCH);
 MPU6050 IMU;
 Preferences prefs;
 
 // MPU control/status vars
-bool IMUReady = false;  // set true if DMP init was successful
-uint8_t IMUdevStatus;      // return status after each device operation (0 = success, !0 = error)
-uint16_t IMUpacketSize;    // expected DMP packet size (default is 42 bytes)
-uint16_t IMUfifoCount;     // count of all bytes currently in FIFO
-uint8_t IMUfifoBuffer[64]; // FIFO storage buffer
+bool IMUReady = false;      // set true if DMP init was successful
+uint8_t IMUdevStatus;       // return status after each device operation (0 = success, !0 = error)
+uint16_t IMUpacketSize;     // expected DMP packet size (default is 42 bytes)
+uint16_t IMUfifoCount;      // count of all bytes currently in FIFO
+uint8_t IMUfifoBuffer[64];  // FIFO storage buffer
 
 // orientation/motion vars
-Quaternion IMUq;               // [w, x, y, z] quaternion container
-VectorFloat IMUgravity;        // [x, y, z]  gravity vector
-float IMUypr[3] = {0, 0, 0};   // [yaw, pitch, roll] yaw/pitch/roll container and gravity vector
+Quaternion IMUq;                // [w, x, y, z] quaternion container
+VectorFloat IMUgravity;         // [x, y, z]  gravity vector
+float IMUypr[3] = { 0, 0, 0 };  // [yaw, pitch, roll] yaw/pitch/roll container and gravity vector
 
 int xAccelOffset, yAccelOffset, zAccelOffset, xGyroOffset, yGyroOffset, zGyroOffset;
 String serialStr;
@@ -56,9 +63,9 @@ void setup() {
 
   pinMode(CAL_BUTTON, INPUT_PULLUP);
   pinMode(BRIGHTNESS_PIN, OUTPUT);
-  pinMode(SD_DET,INPUT_PULLUP);
+  pinMode(SD_DET, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(CAL_BUTTON), calButton, FALLING);
-  attachInterrupt(digitalPinToInterrupt(SD_DET), sdDetection, FALLING);
+  attachInterrupt(digitalPinToInterrupt(SD_DET), sdDetection, CHANGE);
 
   ledcSetup(PWM_CHAN, PWM_FREQ, PWM_RES);
   ledcAttachPin(BRIGHTNESS_PIN, PWM_CHAN);
@@ -66,6 +73,8 @@ void setup() {
   // initialize EEPROM with predefined size
   prefs.begin(PREF_NAMESPACE, false);
   eeprom_get();
+
+  initWiFi();
 
   // join I2C bus (I2Cdev library doesn't do this automatically)
   Wire.begin();
@@ -89,6 +98,7 @@ void setup() {
 
 void loop() {
   // if IMU programming failed, don't try to do anything
+  AsyncElegantOTA.loop();
   if (!IMUReady) return;  //halt if MPU is missing
 
   IMUdata();
