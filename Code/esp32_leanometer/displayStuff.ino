@@ -72,7 +72,7 @@ void brightness() {
     brightValue = map(ldrValue, LDR_MIN_THRES+1, LDR_MAX_THRES, 11, 255);
   }
   else {
-    bright_value = 255;
+    brightValue = 255;
   }
   ledcWrite(PWM_CHAN, brightValue);
 //  Serial.print(ldrValue);

@@ -54,7 +54,7 @@ void IMUcalibration() {
   IMU.CalibrateGyro(6);
 #ifdef SERIAL_DEBUG
   IMU.PrintActiveOffsets();
-#ifdef
+#endif
   eepromPut();
 }
 

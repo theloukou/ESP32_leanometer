@@ -3,16 +3,16 @@
 #include "SD.h"
 #include "SPI.h"
 #include "Preferences.h"
+#include "WiFi.h"
 #include "src/ShiftRegister74HC595.h"
 #include "src/I2Cdev.h"
 #include "src/MPU6050_6Axis_MotionApps612.h"
+#include "ESPAsyncWebServer.h"
+#include "AsyncElegantOTA.h"
 #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
 #include "Wire.h"
 #endif
 
-#include <WiFi.h>
-#include <ESPAsyncWebServer.h>
-#include <AsyncElegantOTA.h>
 AsyncWebServer server(80);
 const char* ssid = "Leanometer_AP";
 const char* password = "1234567890";
@@ -29,7 +29,6 @@ uint16_t IMUfifoCount;      // count of all bytes currently in FIFO
 uint8_t IMUfifoBuffer[64];  // FIFO storage buffer
 
 // orientation/motion vars
-<<<<<<< HEAD
 Quaternion IMUq;              // [w, x, y, z] quaternion container
 VectorInt16 IMUaa;            // [x, y, z] accel sensor measurements
 VectorInt16 IMUgy;            // [x, y, z] gyro sensor measurements
@@ -37,11 +36,6 @@ VectorInt16 IMUaaReal;        // [x, y, z] gravity-free accel sensor measurement
 VectorInt16 IMUaaWorld;       // [x, y, z] world-frame accel sensor measurements
 VectorFloat IMUgravity;       // [x, y, z] gravity vector
 float IMUypr[3] = {0, 0, 0};  // [yaw, pitch, roll] yaw/pitch/roll container and gravity vector
-=======
-Quaternion IMUq;                // [w, x, y, z] quaternion container
-VectorFloat IMUgravity;         // [x, y, z]  gravity vector
-float IMUypr[3] = { 0, 0, 0 };  // [yaw, pitch, roll] yaw/pitch/roll container and gravity vector
->>>>>>> 9cb41c3ee214d868aed4f6ce427fa6df09b4be5f
 
 int xAccelOffset, yAccelOffset, zAccelOffset, xGyroOffset, yGyroOffset, zGyroOffset;
 String serialStr;
