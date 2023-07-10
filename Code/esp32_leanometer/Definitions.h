@@ -1,6 +1,7 @@
 #define SERIAL_DEBUG
 
-#define CAL_BUTTON 16
+#define USER_BUTTON 16
+#define BOOT_BUTTON 0
 
 #define BRIGHTNESS_PIN 13
 #define PWM_CHAN 0
@@ -25,8 +26,8 @@
 
 #define LDR_MIN_THRES 200
 #define LDR_MAX_THRES 800
-#define CA_7SDU
-//#define CC_7SDU
+//#define CA_7SDU
+#define CC_7SDU
 
 #define PREF_NAMESPACE "IMUoffsets"
 

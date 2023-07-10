@@ -40,15 +40,15 @@ float IMUypr[3] = {0, 0, 0};  // [yaw, pitch, roll] yaw/pitch/roll container and
 int xAccelOffset, yAccelOffset, zAccelOffset, xGyroOffset, yGyroOffset, zGyroOffset;
 String serialStr;
 double angle, maxAngle = 0;
-bool calTriggered = false, maxTriggered = false;
+bool userButtonTriggered = false, bootButtonTriggered = false;
 unsigned long buttonTime;
 
-void IRAM_ATTR calButton() {
-  calTriggered = true;
+void IRAM_ATTR userButton() {
+  userButtonTriggered = true;
 }
 
-void IRAM_ATTR maxButton() {
-  maxTriggered = true;
+void IRAM_ATTR bootButton() {
+  bootButtonTriggered = true;
 }
 
 void setup() {
@@ -65,10 +65,11 @@ void setup() {
   Serial.begin(115200);
 #endif
 
-  pinMode(CAL_BUTTON, INPUT_PULLUP);
+  pinMode(USER_BUTTON, INPUT_PULLUP);
   pinMode(BRIGHTNESS_PIN, OUTPUT);
   pinMode(SD_DET, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(CAL_BUTTON), calButton, FALLING);
+  attachInterrupt(digitalPinToInterrupt(USER_BUTTON), userButton, FALLING);
+  attachInterrupt(digitalPinToInterrupt(BOOT_BUTTON), bootButton, FALLING);
   attachInterrupt(digitalPinToInterrupt(SD_DET), sdDetection, CHANGE);
 
   ledcSetup(PWM_CHAN, PWM_FREQ, PWM_RES);

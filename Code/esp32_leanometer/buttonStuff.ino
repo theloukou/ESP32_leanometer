@@ -1,7 +1,7 @@
 void calCheck() {
-  if (calTriggered) {
+  if (userButtonTriggered) {
     buttonTime = millis();
-    while (!digitalRead(CAL_BUTTON)) {
+    while (!digitalRead(USER_BUTTON)) {
       if (millis() - buttonTime > 2000) {
         blinkDisp(5);
         delay(1000);
@@ -10,7 +10,7 @@ void calCheck() {
         blinkDisp(5);
       }
     }
-    calTriggered = false;
+    userButtonTriggered = false;
     IMU.resetFIFO();
   }
 }
