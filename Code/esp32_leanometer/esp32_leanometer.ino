@@ -40,15 +40,19 @@ float IMUypr[3] = {0, 0, 0};  // [yaw, pitch, roll] yaw/pitch/roll container and
 int xAccelOffset, yAccelOffset, zAccelOffset, xGyroOffset, yGyroOffset, zGyroOffset;
 String serialStr;
 double angle, maxAngle = 0;
-bool userButtonTriggered = false, bootButtonTriggered = false;
+bool userButtonTriggered = false, bootButtonTriggered = false, sdDetectionTriggered = false;
 unsigned long buttonTime;
 
-void IRAM_ATTR userButton() {
+void IRAM_ATTR userButtonISR() {
   userButtonTriggered = true;
 }
 
-void IRAM_ATTR bootButton() {
+void IRAM_ATTR bootButtonISR() {
   bootButtonTriggered = true;
+}
+
+void IRAM_ATTR sdDetectionISR() {
+  sdDetectionTriggered = true;
 }
 
 void setup() {
@@ -65,12 +69,13 @@ void setup() {
   Serial.begin(115200);
 #endif
 
+  analogReadResolution(10);
   pinMode(USER_BUTTON, INPUT_PULLUP);
   pinMode(BRIGHTNESS_PIN, OUTPUT);
   pinMode(SD_DET, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(USER_BUTTON), userButton, FALLING);
-  attachInterrupt(digitalPinToInterrupt(BOOT_BUTTON), bootButton, FALLING);
-  attachInterrupt(digitalPinToInterrupt(SD_DET), sdDetection, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(USER_BUTTON), userButtonISR, FALLING);
+  attachInterrupt(digitalPinToInterrupt(BOOT_BUTTON), bootButtonISR, FALLING);
+  attachInterrupt(digitalPinToInterrupt(SD_DET), sdDetectionISR, CHANGE);
 
   ledcSetup(PWM_CHAN, PWM_FREQ, PWM_RES);
   ledcAttachPin(BRIGHTNESS_PIN, PWM_CHAN);
@@ -88,8 +93,8 @@ void setup() {
   //initialise IMU
   IMUsetup();
 
-  //initialize SD
-  sdInit();
+  //check for SD card
+  sdSetupCheck();
 
 #ifdef SERIAL_DEBUG
   Serial.println("Ready!");
@@ -115,6 +120,6 @@ void loop() {
   }
 
   brightness();
-
   calCheck();
+  sdDetection();
 }

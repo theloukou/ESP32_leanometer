@@ -1,18 +1,26 @@
-void sdInit() {
+bool sdPresent = false;
 
+void sdSetupCheck() {
+  if (!digitalRead(SD_DET)) {
+    sdInit();
+  }
+#ifdef SERIAL_DEBUG
+  else {
+    Serial.println("No SD card attached");
+  }
+#endif
+}
+
+void sdInit() {
   if (!SD.begin()) {
 #ifdef SERIAL_DEBUG
-    Serial.println("Card Mount Failed");
+    Serial.println("SD card Mount Failed");
 #endif
     return;
   }
   uint8_t cardType = SD.cardType();
 
 #ifdef SERIAL_DEBUG
-  if (cardType == CARD_NONE) {
-    Serial.println("No SD card attached");
-    return;
-  }
   Serial.print("SD Card Type: ");
   if (cardType == CARD_MMC) {
     Serial.println("MMC");
@@ -29,6 +37,27 @@ void sdInit() {
 #endif
 }
 
-void sdDetection(){
-  
+void sdDeint() {
+  SD.end();
+  Serial.println("Sd card de-initialized!");
+}
+
+void sdDetection() {
+  if (sdDetectionTriggered) {
+    sdDetectionTriggered = false;
+    sdPresent = digitalRead(SD_DET);
+    if (sdPresent) {
+      !sdPresent;
+#ifdef SERIAL_DEBUG
+      Serial.println("SD card removed!");
+#endif
+    }
+    else {
+      !sdPresent;
+#ifdef SERIAL_DEBUG
+      Serial.println("SD card inserted!!");
+#endif
+      sdInit();
+    }
+  }
 }

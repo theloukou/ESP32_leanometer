@@ -1,4 +1,3 @@
-
 void initWiFi() {
   WiFi.softAP(ssid, password);
   IPAddress IP = WiFi.softAPIP();
