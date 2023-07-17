@@ -112,8 +112,9 @@ void loop() {
   if (!IMUReady) return;  //halt if MPU is missing
 
   IMUangles();
-  //  Serial.println(angle);
+  IMUgforces();
   updateDisp(abs(angle));
+  sdHandleLogs();
 
   if (abs(angle) > maxAngle) {
     maxAngle = abs(angle);

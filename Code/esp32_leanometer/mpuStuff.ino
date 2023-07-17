@@ -89,6 +89,15 @@ void IMUangles() {
 
   //get desired used angles
   angle = IMUypr[2] * 180 / M_PI;
+
+#ifdef SERIAL_MPU
+  Serial.print("ypr\t");
+  Serial.print(IMUypr[0] * 180 / M_PI);
+  Serial.print("\t");
+  Serial.print(IMUypr[1] * 180 / M_PI);
+  Serial.print("\t");
+  Serial.print(IMUypr[2] * 180 / M_PI);
+#endif
 }
 
 //calculate g-forces
@@ -100,11 +109,21 @@ void IMUgforces() {
   IMU.dmpGetAccel(&IMUaa, IMUfifoBuffer);
   IMU.dmpGetGravity(&IMUgravity, &IMUq);
   IMU.dmpGetLinearAccel(&IMUaaReal, &IMUaa, &IMUgravity);
-  IMU.dmpGetLinearAccelInWorld(&IMUaaWorld, &IMUaaReal, &IMUq);
+  //  IMU.dmpGetLinearAccelInWorld/(&IMUaaWorld, &IMUaaReal, &IMUq);
+
+#ifdef SERIAL_MPU
+  Serial.print("areal\t");
+  Serial.print(IMUaaReal.x);
+  Serial.print("\t");
+  Serial.print(IMUaaReal.y);
+  Serial.print("\t");
+  Serial.println(IMUaaReal.z);
+
   Serial.print("aworld\t");
   Serial.print(IMUaaWorld.x);
   Serial.print("\t");
   Serial.print(IMUaaWorld.y);
   Serial.print("\t");
-  Serial.println(IMUaaWorld.z);
+  //  Serial.println(IMUaaWorld.z);
+#endif
 }

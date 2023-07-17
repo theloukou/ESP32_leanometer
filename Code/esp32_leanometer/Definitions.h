@@ -1,4 +1,7 @@
 #define SERIAL_DEBUG
+#ifdef SERIAL_DEBUG
+//  #define SERIAL_MPU
+#endif
 
 #define USER_BUTTON 16
 #define BOOT_BUTTON 0
