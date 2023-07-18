@@ -19,7 +19,7 @@ const char* ssid = "Leanometer_AP";
 const char* password = "1234567890";
 
 ShiftRegister74HC595<2> disp(SHIFT_REG_DATA, SHIFT_REG_CLOCK, SHIFT_REG_LATCH);
-MPU6050 IMU;
+MPU6050 IMU(0x69);
 Preferences prefs;
 
 // MPU control/status vars
