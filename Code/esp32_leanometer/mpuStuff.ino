@@ -55,7 +55,7 @@ void IMUcalibration() {
 #ifdef SERIAL_DEBUG
   IMU.PrintActiveOffsets();
 #endif
-  eepromPut();
+  offsetsPut();
 }
 
 //get IMU data
@@ -80,8 +80,6 @@ void IMUdata() {
 
 //calculate needed angles
 void IMUangles() {
-  IMUdata();
-
   // calculate Euler angles in degrees
   IMU.dmpGetQuaternion(&IMUq, IMUfifoBuffer);
   IMU.dmpGetGravity(&IMUgravity, &IMUq);
@@ -96,14 +94,12 @@ void IMUangles() {
   Serial.print("\t");
   Serial.print(IMUypr[1] * 180 / M_PI);
   Serial.print("\t");
-  Serial.print(IMUypr[2] * 180 / M_PI);
+  Serial.println(IMUypr[2] * 180 / M_PI);
 #endif
 }
 
 //calculate g-forces
 void IMUgforces() {
-  IMUdata();
-
   // display initial world-frame acceleration, adjusted to remove gravity and rotated based on known orientation from quaternion
   IMU.dmpGetQuaternion(&IMUq, IMUfifoBuffer);
   IMU.dmpGetAccel(&IMUaa, IMUfifoBuffer);
@@ -124,6 +120,6 @@ void IMUgforces() {
   Serial.print("\t");
   Serial.print(IMUaaWorld.y);
   Serial.print("\t");
-  //  Serial.println(IMUaaWorld.z);
+  Serial.println(IMUaaWorld.z);
 #endif
 }

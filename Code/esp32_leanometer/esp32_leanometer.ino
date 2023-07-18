@@ -13,6 +13,7 @@
 #include "Wire.h"
 #endif
 
+
 AsyncWebServer server(80);
 const char* ssid = "Leanometer_AP";
 const char* password = "1234567890";
@@ -40,9 +41,11 @@ float IMUypr[3] = {0, 0, 0};  // [yaw, pitch, roll] yaw/pitch/roll container and
 int xAccelOffset, yAccelOffset, zAccelOffset, xGyroOffset, yGyroOffset, zGyroOffset;
 String serialStr;
 double angle, maxAngle = 0;
-bool userButtonTriggered = false, bootButtonTriggered = false, sdDetectionTriggered = false;
+volatile bool userButtonTriggered = false, bootButtonTriggered = false, sdDetectionTriggered = false, IMUintTriggered = false;
 unsigned long buttonTime;
+unsigned int logNum;
 
+// ISR functions
 void IRAM_ATTR userButtonISR() {
   userButtonTriggered = true;
 }
@@ -53,6 +56,10 @@ void IRAM_ATTR bootButtonISR() {
 
 void IRAM_ATTR sdDetectionISR() {
   sdDetectionTriggered = true;
+}
+
+void IRAM_ATTR IMUdataReadyISR() {
+  IMUintTriggered = true;
 }
 
 void setup() {
@@ -73,18 +80,20 @@ void setup() {
   pinMode(USER_BUTTON, INPUT_PULLUP);
   pinMode(BRIGHTNESS_PIN, OUTPUT);
   pinMode(SD_DET, INPUT_PULLUP);
+  pinMode(IMU_INT, INPUT);
   attachInterrupt(digitalPinToInterrupt(USER_BUTTON), userButtonISR, FALLING);
   attachInterrupt(digitalPinToInterrupt(BOOT_BUTTON), bootButtonISR, FALLING);
   attachInterrupt(digitalPinToInterrupt(SD_DET), sdDetectionISR, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(IMU_INT), IMUdataReadyISR, RISING);
 
   ledcSetup(PWM_CHAN, PWM_FREQ, PWM_RES);
   ledcAttachPin(BRIGHTNESS_PIN, PWM_CHAN);
 
   // initialize EEPROM with predefined size
   prefs.begin(PREF_NAMESPACE, false);
-  eepromGet();
+  offsetsGet();
 
-  initWiFi();
+  //  initWiFi();
 
   // join I2C bus (I2Cdev library doesn't do this automatically)
   Wire.begin();
@@ -109,12 +118,18 @@ void setup() {
 void loop() {
   // if IMU programming failed, don't try to do anything
   AsyncElegantOTA.loop();
-  if (!IMUReady) return;  //halt if MPU is missing
+  if (!IMUReady) {
+    return;  //halt if MPU is missing
+  }
 
-  IMUangles();
-  IMUgforces();
-  updateDisp(abs(angle));
-  sdHandleLogs();
+  if (IMUintTriggered) {
+    IMUintTriggered = false;
+    IMUdata();
+    IMUangles();
+    IMUgforces();
+    updateDisp(abs(angle));
+    sdHandleLogs();
+  }
 
   if (abs(angle) > maxAngle) {
     maxAngle = abs(angle);

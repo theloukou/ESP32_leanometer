@@ -19,6 +19,8 @@
 #define I2C_SDA 21
 #define I2C_SCL 22
 
+#define IMU_INT 4
+
 #define VBAT_PIN 33
 
 #define SD_MOSI 23
@@ -32,7 +34,8 @@
 //#define CA_7SDU
 #define CC_7SDU
 
-#define PREF_NAMESPACE "IMUoffsets"
+#define PREF_NAMESPACE "Leanometer_data"
+#define LOG_PATH "/logs/"
 
 /// OTA 
 //#define SSID "Leanometer_AP"
