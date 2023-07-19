@@ -2,6 +2,7 @@
 #include "FS.h"
 #include "SD.h"
 #include "SPI.h"
+#include "RTClib.h"
 #include "Preferences.h"
 #include "WiFi.h"
 #include "src/ShiftRegister74HC595.h"
@@ -20,6 +21,7 @@ const char* password = "1234567890";
 
 ShiftRegister74HC595<2> disp(SHIFT_REG_DATA, SHIFT_REG_CLOCK, SHIFT_REG_LATCH);
 MPU6050 IMU(0x69);
+RTC_DS1307 rtc;
 Preferences prefs;
 
 // MPU control/status vars
@@ -93,11 +95,16 @@ void setup() {
   prefs.begin(PREF_NAMESPACE, false);
   offsetsGet();
 
+  // Setup wireless coms
+  btStop();
   //  initWiFi();
 
   // join I2C bus (I2Cdev library doesn't do this automatically)
   Wire.begin();
   Wire.setClock(100000);
+
+  //initialise RTC
+  rtcInit();
 
   //initialise IMU
   IMUsetup();

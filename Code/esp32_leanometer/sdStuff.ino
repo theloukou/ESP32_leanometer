@@ -108,7 +108,7 @@ void sdLogFileWrite(File* file) {
   }
   char buf[100];
   //  int8_t bufLen = sprintf(buf, "%u,%.2f,%.2f,%.2f,%d,%d,%d\n", random(0,1000),IMUypr[0],IMUypr[1],IMUypr[2],IMUaaWorld.x,IMUaaWorld.y,IMUaaWorld.z);
-  int8_t bufLen = sprintf(buf, "%u,%.2f,%.2f,%.2f,%d,%d,%d\n", millis(), IMUypr[0], IMUypr[1], IMUypr[2], IMUaaReal.x, IMUaaReal.y, IMUaaReal.z);
+  int8_t bufLen = sprintf(buf, "%u,%.2f,%.2f,%.2f,%d,%d,%d\n", rtcGetUnixTime(), IMUypr[0], IMUypr[1], IMUypr[2], IMUaaReal.x, IMUaaReal.y, IMUaaReal.z);
   file->print(buf);
 }
 
