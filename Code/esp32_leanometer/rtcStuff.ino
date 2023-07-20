@@ -5,9 +5,9 @@ void rtcInit() {
 #endif
   }
 
-  if (! rtc.isrunning()) {
+  if (!rtc.initialized() || rtc.lostPower()) {
 #ifdef SERIAL_DEBUG
-    Serial.println("RTC is NOT running, setting to preset");
+    Serial.println("RTC is NOT initialized, setting to preset. Please set date and time.");
 #endif
     rtc.adjust(DateTime(2000, 1, 01, 12, 0, 0));
   }

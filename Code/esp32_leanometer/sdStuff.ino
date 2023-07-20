@@ -73,7 +73,9 @@ void sdDetection() {
 int8_t sdLogFileOpen(File* file) {
   logNumGet();
   char logPath[50];
-  sprintf(logPath, "%s%05u.csv", LOG_PATH, logNum);
+  DateTime currentTime = rtc.now();
+  //  sprintf(logPath, "%s%05u.csv", LOG_PATH, logNum);
+  sprintf(logPath, "%s%4u_%02u_%02u_%02u_%02u_%02u.csv", LOG_PATH, currentTime.year(), currentTime.month(), currentTime.day(), currentTime.hour(), currentTime.minute(), currentTime.second());
 
 #ifdef SERIAL_DEBUG
   Serial.printf("Starting new log file in %s\r\n", logPath);
