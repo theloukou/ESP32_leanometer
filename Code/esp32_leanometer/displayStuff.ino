@@ -1,44 +1,74 @@
 int lsdigit, msdigit;
 unsigned int ldrValue;
-byte brightValue;
+byte brightValue, angleOffset;
+bool dispFlip=0;
 
+//segment format: B x x x x x x x x
+//                  P G F E D C B A
+//
+//                  A
+//                F G B
+//                E   C
+//                  D   P
+
+
+//{normal orientation, flipped orientation}
 //common anode 7sdu
 #ifdef CA_7SDU
-const uint8_t  segNumbers[] = {B11000000, //0
-                               B11111001, //1
-                               B10100100, //2
-                               B10110000, //3
-                               B10011001, //4
-                               B10010010, //5
-                               B10000011, //6
-                               B11111000, //7
-                               B10000000, //8
-                               B10011000  //9
-                              };
+const uint8_t  segNumbers[10][2] = {{B11000000, 0xFF}, //0
+                                   {B11111001, 0xFF}, //1
+                                   {B10100100, 0xFF}, //2
+                                   {B10110000, 0xFF}, //3
+                                   {B10011001, 0xFF}, //4
+                                   {B10010010, 0xFF}, //5
+                                   {B10000011, 0xFF}, //6
+                                   {B11111000, 0xFF}, //7
+                                   {B10000000, 0xFF}, //8
+                                   {B10011000, 0xFF} //9
+                                  };
 #endif
 //common cathode 7sdu
 #ifdef CC_7SDU
-const uint8_t  segNumbers[] = {B00111111, //0
-                               B00000110, //1
-                               B01011011, //2
-                               B01001111, //3
-                               B01100110, //4
-                               B01101101, //5
-                               B01111100, //6
-                               B00000111, //7
-                               B01111111, //8
-                               B01100111  //9
-                              };
+const uint8_t  segNumbers[10][2] = {{B00111111, B00111111}, //0
+                                   {B00000110, B00110000}, //1
+                                   {B01011011, B01011011}, //2
+                                   {B01001111, B01111001}, //3
+                                   {B01100110, B01110100}, //4
+                                   {B01101101, B01101101}, //5
+                                   {B01111100, B01100111}, //6
+                                   {B00000111, B00111000}, //7
+                                   {B01111111, B01111111}, //8
+                                   {B01100111, B01111100}  //9
+                                  };
 #endif
 
+void orientateDisp(){
+  int16_t ax, ay, az;
+  IMU.getAcceleration(&ax, &ay, &az);
+  
+  if (az > 0){
+    dispFlip = 0;
+    angleOffset = 0;
+  }
+  else{
+    dispFlip = 1;
+    angleOffset = 180;
+#ifdef SERIAL_DEBUG
+    Serial.printf("Ax,Ay,Az: %d,%d,%d \r\n", ax, ay, az);
+    Serial.printf("Display flip: %d \r\n", dispFlip);
+#endif
+  }
+}
+
 void updateDisp(int angle) {
-  lsdigit = segNumbers[angle % 10] ;
-  msdigit = segNumbers[(angle / 10) % 10] ;
+  int fAngle = abs(angle - angleOffset);
+  lsdigit = segNumbers[fAngle % 10][dispFlip] ;
+  msdigit = segNumbers[(fAngle / 10) % 10][dispFlip] ;
 #ifdef CA_7SDU
-  if (msdigit == segNumbers[0]) msdigit = B11111111;
+  if (msdigit == segNumbers[0][dispFlip]) msdigit = B11111111;
 #endif
 #ifdef CC_7SDU
-  if (msdigit == segNumbers[0]) msdigit = B00000000;
+  if (msdigit == segNumbers[0][dispFlip]) msdigit = B00000000;
 #endif
   uint8_t numberToPrint[] = {msdigit, lsdigit};
   disp.setAll(numberToPrint);
@@ -75,7 +105,4 @@ void brightness() {
     brightValue = 255;
   }
   ledcWrite(PWM_CHAN, brightValue);
-//  Serial.print(ldrValue);
-//  Serial.print("\t");
-//  Serial.println(brightValue);
 }

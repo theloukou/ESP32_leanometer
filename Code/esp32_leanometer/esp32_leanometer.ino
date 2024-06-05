@@ -11,6 +11,8 @@
 #include "WiFi.h"
 #include "ESPAsyncWebServer.h"
 #include "AsyncElegantOTA.h"
+#include "AsyncJson.h"
+#include <ArduinoJson.h>
 #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
 #include "Wire.h"
 #endif
@@ -102,13 +104,19 @@ void setup() {
 
   // join I2C bus (I2Cdev library doesn't do this automatically)
   Wire.begin();
-  Wire.setClock(100000);
+  Wire.setClock(I2C_FREQ);
 
   //initialise RTC
   rtcInit();
 
   //initialise IMU
   IMUsetup();
+
+  //set display orientation
+  //  for (byte index=0;index<100;index++){
+  //    IMUdata();
+  //  }
+  //  orientateDisp();
 
   //check for SD card
   sdSetupCheck();
@@ -134,8 +142,8 @@ void loop() {
     IMUintTriggered = false;
     IMUdata();
     IMUangles();
-    IMUgforces();
-    updateDisp(abs(angle));
+    //    IMUgforces();
+    updateDisp(angle);
     sdHandleLogs();
   }
 

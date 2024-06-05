@@ -86,7 +86,7 @@ void IMUangles() {
   IMU.dmpGetYawPitchRoll(IMUypr, &IMUq, &IMUgravity);
 
   //get desired used angles
-  angle = IMUypr[2] * 180 / M_PI;
+  angle = IMUypr[1] * 180 / M_PI;
 
 #ifdef SERIAL_MPU
   Serial.print("ypr\t");
@@ -105,7 +105,7 @@ void IMUgforces() {
   IMU.dmpGetAccel(&IMUaa, IMUfifoBuffer);
   IMU.dmpGetGravity(&IMUgravity, &IMUq);
   IMU.dmpGetLinearAccel(&IMUaaReal, &IMUaa, &IMUgravity);
-  //  IMU.dmpGetLinearAccelInWorld/(&IMUaaWorld, &IMUaaReal, &IMUq);
+//  IMU.dmpGetLinearAccelInWorld(&IMUaaWorld, &IMUaaReal, &IMUq);
 
 #ifdef SERIAL_MPU
   Serial.print("areal\t");

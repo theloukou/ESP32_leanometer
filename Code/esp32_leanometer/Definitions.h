@@ -18,6 +18,7 @@
 
 #define I2C_SDA 21
 #define I2C_SCL 22
+#define I2C_FREQ 400000
 
 #define IMU_INT 4
 

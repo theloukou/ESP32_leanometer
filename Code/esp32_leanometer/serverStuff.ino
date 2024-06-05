@@ -11,34 +11,46 @@ void initWiFi() {
 void startServer() {
   initWiFi();
 
-  //  server.on("/", HTTP_GET, [](AsyncWebServerRequest * request) {
-  //#ifdef SERIAL_DEBUG
-  //    Serial.println("Index loading;");
-  //#endif
-  //    request->send_P(200, "text/html", index_html);
-  //  });
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest * request) {
+#ifdef SERIAL_DEBUG
+    Serial.println("Index loading;");
+#endif
+    request->send_P(200, "text/html", index_html);
+  });
 
   // Initialize SPIFFS
-  if (!SPIFFS.begin(true)) {
-#ifdef SERIAL_DEBUG
-    Serial.println("An Error has occurred while mounting SPIFFS");
-#endif
-    return;
-  }
+  //  if (!SPIFFS.begin(true)) {
+  //#ifdef SERIAL_DEBUG
+  //    Serial.println("An Error has occurred while mounting SPIFFS");
+  //#endif
+  //    return;
+  //  }
 
   // Route for root / web page
   server.on("/", HTTP_GET, [](AsyncWebServerRequest * request) {
 #ifdef SERIAL_DEBUG
     Serial.println("Index loading;");
 #endif
-    request->send(SPIFFS, "/index_html");
+    request->send_P(200, "text/html", index_html);
   });
 
-  // Route to load style.css file
-  server.on("/style.css", HTTP_GET, [](AsyncWebServerRequest * request) {
-    request->send(SPIFFS, "/styles.css", "text/css");
+  AsyncCallbackJsonWebHandler* JsonHandler = new AsyncCallbackJsonWebHandler("/rtc", [](AsyncWebServerRequest * request, JsonVariant & json) {
+    StaticJsonDocument<200> jsonData;
+    jsonData = json.as<JsonObject>();
+    String response;
+    serializeJson(jsonData, response);
+#ifdef SERIAL_DEBUG
+    Serial.println(response);
+#endif
+    rtc.adjust(DateTime(jsonData["Y"], jsonData["M"], jsonData["D"], jsonData["h"], jsonData["m"], jsonData["s"]));
+#ifdef SERIAL_DEBUG
+    Serial.println("New time set!");
+#endif
+    delay(100);
+    request->send_P(200, "text/plain", "RTC Synced!");
   });
 
+  server.addHandler(JsonHandler);
   AsyncElegantOTA.begin(&server);
   server.begin();
 }
