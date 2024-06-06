@@ -8,10 +8,10 @@ const char index_html[] PROGMEM = R"rawliteral(
                 button { display: block; margin: 10px auto; padding: 8px 4px; min-width: 152px;}
             </style>
         </head  >
-        <body onload="setRTC()">
+        <body onload="getRTC()">
             
             <div>
-                <h2>Duck Entertainment System</h2>
+                <h2>Da Bestest Leanometer in da BIZ</h2>
                 <p id="time-p"></p>
                 <button onclick="syncRTC();">Sync RTC</button>
                 <button onclick="calibrateIMU();">Calibrate IMU</button>
@@ -30,7 +30,7 @@ const char index_html[] PROGMEM = R"rawliteral(
                         "s": currentTime.getSeconds()
                     };
                     try {
-                        const response = await fetch('/setRTC', {
+                        const response = await fetch('/syncRTC', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -50,8 +50,8 @@ const char index_html[] PROGMEM = R"rawliteral(
                         }
                     }
 
-                function setRTC() {
-                    fetch('/setRTC', { method: 'GET' })
+                function getRTC() {
+                    fetch('/getRTC', { method: 'GET' })
                         .then(response => {
                         if (response.ok) {
                             return response.json();

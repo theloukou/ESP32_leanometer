@@ -29,12 +29,30 @@ void startServer() {
   // Route for root / web page
   server.on("/", HTTP_GET, [](AsyncWebServerRequest * request) {
 #ifdef SERIAL_DEBUG
-    Serial.println("Index loading;");
+    Serial.println("Index loading");
 #endif
     request->send_P(200, "text/html", index_html);
   });
 
-  AsyncCallbackJsonWebHandler* JsonHandler = new AsyncCallbackJsonWebHandler("/rtc", [](AsyncWebServerRequest * request, JsonVariant & json) {
+  server.on("/getRTC", HTTP_GET, [](AsyncWebServerRequest * request) {
+     DateTime currentTime = rtc.now();
+    unsigned long unixTime = currentTime.unixtime();
+//    StaticJsonDocument<200> jsonData;
+//    String response;
+//    jsonData["unixTime"] = unixTime;
+//    serializeJson(jsonData, response);
+    char rtcJson[50];
+    sprintf(rtcJson, "{\"unixTime\":%d}", unixTime);
+
+#ifdef SERIAL_DEBUG
+    Serial.print("Sending RTC unix time: ");
+    Serial.println(rtcJson);
+#endif
+    
+    request->send_P(200, "application/json", rtcJson);
+  });
+
+  AsyncCallbackJsonWebHandler* JsonHandler = new AsyncCallbackJsonWebHandler("/syncRTC", [](AsyncWebServerRequest * request, JsonVariant & json) {
     StaticJsonDocument<200> jsonData;
     jsonData = json.as<JsonObject>();
     String response;
