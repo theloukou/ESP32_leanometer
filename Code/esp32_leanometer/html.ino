@@ -60,7 +60,7 @@ const char index_html[] PROGMEM = R"rawliteral(
                         }
                         })
                         .then(data => {
-                            const date = new Date(data['unit time']);
+                            const date = new Date(data['unixTime']);
                             document.getElementById('time-p').innerText = 'MCU onload date: ' + date.toDateString();
                             // alert('RTC get successful');
                         })
