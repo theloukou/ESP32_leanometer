@@ -12,7 +12,7 @@ const char index_html[] PROGMEM = R"rawliteral(
             
             <div>
                 <h2>Da Bestest Leanometer in da BIZ</h2>
-                <p></p>
+                <p id="time-p"></p>
                 <button onclick="syncRTC();">Sync RTC</button>
                 <button onclick="calibrateIMU();">Calibrate IMU</button>
                 <button onclick="downloadLog();">Download Last Log</button>
@@ -68,18 +68,6 @@ const char index_html[] PROGMEM = R"rawliteral(
                             console.error('Error:', error);
                             alert('Failed to get RTC');
                         });
-                    }
-                    
-                function calibrateIMU() {
-                    fetch('/calibrateIMU', { method: 'GET' })
-                        .then(response => {
-                        if (response.ok) {
-                            alert("Don't move sensor until angle is back");
-                        } else {
-                            alert('Failed to calibrate IMU');
-                        }
-                        })
-                        .catch(error => console.error('Error:', error));
                     }
             </script>
         </body>
