@@ -12,7 +12,7 @@ const char index_html[] PROGMEM = R"rawliteral(
             
             <div>
                 <h2>Da Bestest Leanometer in da BIZ</h2>
-                <p id="time-p"></p>
+                <p></p>
                 <button onclick="syncRTC();">Sync RTC</button>
                 <button onclick="calibrateIMU();">Calibrate IMU</button>
                 <button onclick="downloadLog();">Download Last Log</button>
@@ -60,13 +60,26 @@ const char index_html[] PROGMEM = R"rawliteral(
                         }
                         })
                         .then(data => {
-                            document.getElementById('time-p').innerText = 'MCU onload date: ' + data.time;
+                            const date = new Date(data['unit time']);
+                            document.getElementById('time-p').innerText = 'MCU onload date: ' + date.toDateString();
                             // alert('RTC get successful');
                         })
                         .catch(error => {
                             console.error('Error:', error);
                             alert('Failed to get RTC');
                         });
+                    }
+                    
+                function calibrateIMU() {
+                    fetch('/calibrateIMU', { method: 'GET' })
+                        .then(response => {
+                        if (response.ok) {
+                            alert("Don't move sensor until angle is back");
+                        } else {
+                            alert('Failed to calibrate IMU');
+                        }
+                        })
+                        .catch(error => console.error('Error:', error));
                     }
             </script>
         </body>
