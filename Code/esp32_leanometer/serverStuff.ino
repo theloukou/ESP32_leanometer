@@ -23,7 +23,7 @@ void startServer() {
     Serial.println("IMU cal triggered");
 #endif
     request->send_P(200, "text/plain", "IMU cal triggered");
-    IMUcalibration();
+    serverCalTrig = true;
   });
 
   server.on("/getRTC", HTTP_GET, [](AsyncWebServerRequest * request) {

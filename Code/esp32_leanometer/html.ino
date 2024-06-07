@@ -11,7 +11,7 @@ const char index_html[] PROGMEM = R"rawliteral(
         <body onload="getRTC()">
             
             <div>
-                <h2>Da Bestest Leanometer in da BIZ</h2>
+                <h2>Leanometer</h2>
                 <p id="time-p"></p>
                 <button onclick="syncRTC();">Sync RTC</button>
                 <button onclick="calibrateIMU();">Calibrate IMU</button>
@@ -47,28 +47,39 @@ const char index_html[] PROGMEM = R"rawliteral(
                     catch (error) {
                         console.error('Error:', error);
                         alert("An error occurred");
-                        }
                     }
+                }
 
-                function getRTC() {
-                    fetch('/getRTC', { method: 'GET' })
-                        .then(response => {
-                        if (response.ok) {
-                            return response.json();
-                        } else {
+                async function getRTC() {
+                    try {
+                        const response = await fetch('/getRTC', { method: 'GET' });
+                        if (!response.ok) {
                             throw new Error('Failed to get RTC');
                         }
-                        })
-                        .then(data => {
-                            const date = new Date(data['unixTime']);
-                            document.getElementById('time-p').innerText = 'MCU onload date: ' + date.toDateString();
-                            // alert('RTC get successful');
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('Failed to get RTC');
-                        });
+                        
+                        const data = await response.json();
+                        
+                        const date = new Date(data['unixTime']*1000);
+                        document.getElementById('time-p').innerText = 'MCU date/time: ' + date.toLocaleString('en-GB', {timeZone:'GMT'});
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Failed to get RTC');
                     }
+                }
+                    
+                async function calibrateIMU() {
+                    try {
+                        const response = await fetch('/calibrateIMU', { method: 'GET' });
+                        if (!response.ok) {
+                            throw new Error('Failed to calibrate IMU');
+                        }
+                        alert("Do NOT move sensor until angle is back");
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('An error occurred while trying to calibrate the IMU');
+                    }
+                }
+                
             </script>
         </body>
     </html>
