@@ -46,7 +46,7 @@ float IMUypr[3] = {0, 0, 0};  // [yaw, pitch, roll] yaw/pitch/roll container and
 int xAccelOffset, yAccelOffset, zAccelOffset, xGyroOffset, yGyroOffset, zGyroOffset;
 String serialStr;
 double angle, maxAngle = 0;
-volatile bool userButtonTriggered = false, bootButtonTriggered = false, sdDetectionTriggered = false, IMUintTriggered = false;
+volatile bool userButtonTriggered = false, bootButtonTriggered = false, sdDetectionTriggered = false, IMUintTriggered = false, serverCalTrig = false;
 unsigned long buttonTime;
 unsigned int logNum;
 
