@@ -3,19 +3,22 @@
 #include "SD.h"
 #include "SPIFFS.h"
 #include "SPI.h"
-#include "RTClib.h"
 #include "Preferences.h"
-#include "src/ShiftRegister74HC595.h"
-#include "src/I2Cdev.h"
-#include "src/MPU6050_6Axis_MotionApps612.h"
 #include "WiFi.h"
-#include "ESPAsyncWebServer.h"
-#include "AsyncElegantOTA.h"
-#include "AsyncJson.h"
-#include <ArduinoJson.h>
 #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
 #include "Wire.h"
 #endif
+
+#include "src/ShiftRegister74HC595.h"
+#include "src/I2Cdev.h"
+#include "src/MPU6050_6Axis_MotionApps612.h"
+
+#include "RTClib.h"
+#include "ESPAsyncWebServer.h"
+#include "AsyncElegantOTA.h"
+#include "AsyncJson.h"
+#include "ArduinoJson.h"
+
 
 
 AsyncWebServer server(80);
