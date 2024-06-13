@@ -1,4 +1,4 @@
-#include "Definitions.h"
+// Default libs
 #include "FS.h"
 #include "SD.h"
 #include "SPIFFS.h"
@@ -9,16 +9,18 @@
 #include "Wire.h"
 #endif
 
+// Libs/files in sketch folder
+#include "Definitions.h"
 #include "src/ShiftRegister74HC595.h"
 #include "src/I2Cdev.h"
 #include "src/MPU6050_6Axis_MotionApps612.h"
 
+// Libs that need to be installed in IDE
 #include "RTClib.h"
 #include "ESPAsyncWebServer.h"
 #include "AsyncElegantOTA.h"
 #include "AsyncJson.h"
 #include "ArduinoJson.h"
-
 
 
 AsyncWebServer server(80);
