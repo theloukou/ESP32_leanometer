@@ -95,6 +95,7 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(BOOT_BUTTON), bootButtonISR, FALLING);
   attachInterrupt(digitalPinToInterrupt(SD_DET), sdDetectionISR, CHANGE);
   attachInterrupt(digitalPinToInterrupt(IMU_INT), IMUdataReadyISR, RISING);
+  analogReadResolution(10);
 
   ledcSetup(PWM_CHAN, PWM_FREQ, PWM_RES);
   ledcAttachPin(BRIGHTNESS_PIN, PWM_CHAN);
@@ -132,6 +133,9 @@ void setup() {
 
   ledcWrite(PWM_CHAN, 25);
 
+  //show vBat
+  batToDisp();
+
   //reset IMU FIFOs for clean start
   IMU.resetFIFO();
 }
@@ -148,8 +152,8 @@ void loop() {
     IMUdata();
     IMUangles();
     //    IMUgforces();
-    updateDisp(angle);
-    sdHandleLogs();
+    angleToDisp(angle);
+//    sdHandleLogs();
   }
 
   if (abs(angle) > maxAngle) {

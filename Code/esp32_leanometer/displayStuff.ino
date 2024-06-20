@@ -60,16 +60,58 @@ void orientateDisp(){
   }
 }
 
-void updateDisp(int angle) {
+void batToDisp(){
+  uint32_t vBat = getBat();
+  uint16_t vBatInt = vBat /1000 ;
+  uint16_t vBatdec = (vBat % 1000) / 10 ;
+#ifdef SERIAL_DEBUG
+  Serial.printf("int-dec: %d-%d \r\n", vBatInt, vBatdec);
+#endif
+  splitDigits(vBatInt);
+  setDot(&lsdigit);
+  updateDisp();
+  delay(1500);
+  splitDigits(vBatdec);
+  updateDisp();
+  delay(1500);
+}
+
+void angleToDisp(int angle){
   int fAngle = abs(angle - angleOffset);
-  lsdigit = segNumbers[fAngle % 10][dispFlip] ;
-  msdigit = segNumbers[(fAngle / 10) % 10][dispFlip] ;
+  splitDigits(fAngle);
 #ifdef CA_7SDU
   if (msdigit == segNumbers[0][dispFlip]) msdigit = B11111111;
 #endif
 #ifdef CC_7SDU
   if (msdigit == segNumbers[0][dispFlip]) msdigit = B00000000;
 #endif
+  updateDisp();
+}
+
+void setDot(int* digit){
+  #ifdef CA_7SDU
+  *digit &= B01111111;
+#endif
+#ifdef CC_7SDU
+  *digit |= B10000000;
+#endif
+}
+
+void splitDigits(int twoDigits){
+  lsdigit = segNumbers[twoDigits % 10][dispFlip] ;
+  msdigit = segNumbers[(twoDigits / 10) % 10][dispFlip] ;
+}
+
+void updateDisp() {
+//  int fAngle = abs(angle - angleOffset);
+//  lsdigit = segNumbers[twoDigits % 10][dispFlip] ;
+//  msdigit = segNumbers[(twoDigits / 10) % 10][dispFlip] ;
+//#ifdef CA_7SDU
+//  if (msdigit == segNumbers[0][dispFlip]) msdigit = B11111111;
+//#endif
+//#ifdef CC_7SDU
+//  if (msdigit == segNumbers[0][dispFlip]) msdigit = B00000000;
+//#endif
   uint8_t numberToPrint[] = {msdigit, lsdigit};
   disp.setAll(numberToPrint);
 }
