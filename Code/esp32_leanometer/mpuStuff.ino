@@ -1,3 +1,5 @@
+double yprConvFactor = 180 / M_PI;
+
 void IMUsetup() {
   // initialize device
   IMU.initialize();
@@ -86,15 +88,10 @@ void IMUangles() {
   IMU.dmpGetYawPitchRoll(IMUypr, &IMUq, &IMUgravity);
 
   //get desired used angles
-  angle = IMUypr[1] * 180 / M_PI;
+  angle = IMUypr[1] * yprConvFactor;
 
 #ifdef SERIAL_MPU
-  Serial.print("ypr\t");
-  Serial.print(IMUypr[0] * 180 / M_PI);
-  Serial.print("\t");
-  Serial.print(IMUypr[1] * 180 / M_PI);
-  Serial.print("\t");
-  Serial.println(IMUypr[2] * 180 / M_PI);
+  Serial.printf("ypr\t%.2f\t%.2f\t%.2f\r\n", IMUypr[0] * yprConvFactor, IMUypr[1] * yprConvFactor, IMUypr[2] * yprConvFactor);
 #endif
 }
 
@@ -108,18 +105,18 @@ void IMUgforces() {
   //  IMU.dmpGetLinearAccelInWorld(&IMUaaWorld, &IMUaaReal, &IMUq);
 
 #ifdef SERIAL_MPU
-//  Serial.print("areal\t");
-//  Serial.print(IMUaaReal.x);
-//  Serial.print("\t");
-//  Serial.print(IMUaaReal.y);
-//  Serial.print("\t");
-//  Serial.println(IMUaaReal.z);
-//
-//  Serial.print("aworld\t");
-//  Serial.print(IMUaaWorld.x);
-//  Serial.print("\t");
-//  Serial.print(IMUaaWorld.y);
-//  Serial.print("\t");
-//  Serial.println(IMUaaWorld.z);
+  Serial.print("areal\t");
+  Serial.print(IMUaaReal.x);
+  Serial.print("\t");
+  Serial.print(IMUaaReal.y);
+  Serial.print("\t");
+  Serial.println(IMUaaReal.z);
+
+  Serial.print("aworld\t");
+  Serial.print(IMUaaWorld.x);
+  Serial.print("\t");
+  Serial.print(IMUaaWorld.y);
+  Serial.print("\t");
+  Serial.println(IMUaaWorld.z);
 #endif
 }

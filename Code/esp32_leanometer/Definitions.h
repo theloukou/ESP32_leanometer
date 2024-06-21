@@ -31,12 +31,13 @@
 #define SD_DET 17
 
 #define LDR_MIN_THRES 200
-#define LDR_MAX_THRES 800
+#define LDR_MAX_THRES 900
 //#define CA_7SDU
 #define CC_7SDU
 
 #define PREF_NAMESPACE "Leanometer_data"
 #define LOG_PATH "/logs/"
+#define RESET_LOG_PATH "/resetLog.txt"
 
 /// OTA 
 //#define SSID "Leanometer_AP"

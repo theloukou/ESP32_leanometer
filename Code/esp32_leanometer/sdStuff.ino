@@ -1,11 +1,14 @@
 bool sdPresent = false;
 File activeLogFile;
+File resetLogFile;
 #define TEST_PATH "/logs/abcde.txt"
 
 void sdSetupCheck() {
   sdPresent = !digitalRead(SD_DET);
   if (sdPresent) {
     sdInit();
+    sdResetLogFileWrite();
+    sdLogFileOpen(&activeLogFile);
   }
 #ifdef SERIAL_DEBUG
   else {
@@ -71,7 +74,7 @@ void sdDetection() {
 }
 
 int8_t sdLogFileOpen(File* file) {
-  logNumGet();
+  //  logNumGet();
   char logPath[50];
   DateTime currentTime = rtc.now();
   //  sprintf(logPath, "%s%05u.csv", LOG_PATH, logNum);
@@ -80,7 +83,7 @@ int8_t sdLogFileOpen(File* file) {
 #ifdef SERIAL_DEBUG
   Serial.printf("Starting new log file in %s\r\n", logPath);
 #endif
-  *file = SD.open(logPath, FILE_WRITE);
+  *file = SD.open(logPath, FILE_APPEND);
 
   if (!file) {
 #ifdef SERIAL_DEBUG
@@ -99,17 +102,18 @@ void sdLogFileClose(File* file) {
   Serial.printf("Total log size written: %u Bytes\r\n", file->size());
 #endif
   file->close();
-  logNum++;
-  logNumPut();
+  //  logNum++;
+  //  logNumPut();
 }
 
 void sdLogFileWrite(File* file) {
   if (!file) {
+#ifdef SERIAL_DEBUG
     Serial.println("Failed to open file for writing");
+#endif
     return;
   }
   char buf[100];
-  //  int8_t bufLen = sprintf(buf, "%u,%.2f,%.2f,%.2f,%d,%d,%d\n", random(0,1000),IMUypr[0],IMUypr[1],IMUypr[2],IMUaaWorld.x,IMUaaWorld.y,IMUaaWorld.z);
   int8_t bufLen = sprintf(buf, "%u,%.2f,%.2f,%.2f,%d,%d,%d\n", rtcGetUnixTime(), IMUypr[0], IMUypr[1], IMUypr[2], IMUaaReal.x, IMUaaReal.y, IMUaaReal.z);
   file->print(buf);
 }
@@ -117,6 +121,25 @@ void sdLogFileWrite(File* file) {
 void sdHandleLogs() {
   if (sdPresent) {
     sdLogFileWrite(&activeLogFile);
+  }
+}
+
+void sdResetLogFileWrite() {
+  if (sdPresent) {
+    resetLogFile = SD.open(RESET_LOG_PATH, FILE_APPEND);
+    if (!resetLogFile) {
+#ifdef SERIAL_DEBUG
+      Serial.println("Failed to open file for writing");
+#endif
+      return;
+    }
+    char buf[100];
+    int8_t bufLen = sprintf(buf, "%u,%d,%d\n", rtcGetUnixTime(), rtc_get_reset_reason(0), rtc_get_reset_reason(1));
+    resetLogFile.print(buf);
+#ifdef SERIAL_DEBUG
+    Serial.printf("Writing %s \r\n", buf);
+#endif
+    resetLogFile.close();
   }
 }
 
