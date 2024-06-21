@@ -1,6 +1,6 @@
 int lsdigit, msdigit;
 unsigned int ldrValue;
-byte brightValue, angleOffset;
+uint8_t brightValue, angleOffset, brightnessCount=0;
 bool dispFlip=0;
 
 //segment format: B x x x x x x x x
@@ -103,15 +103,6 @@ void splitDigits(int twoDigits){
 }
 
 void updateDisp() {
-//  int fAngle = abs(angle - angleOffset);
-//  lsdigit = segNumbers[twoDigits % 10][dispFlip] ;
-//  msdigit = segNumbers[(twoDigits / 10) % 10][dispFlip] ;
-//#ifdef CA_7SDU
-//  if (msdigit == segNumbers[0][dispFlip]) msdigit = B11111111;
-//#endif
-//#ifdef CC_7SDU
-//  if (msdigit == segNumbers[0][dispFlip]) msdigit = B00000000;
-//#endif
   uint8_t numberToPrint[] = {msdigit, lsdigit};
   disp.setAll(numberToPrint);
 }
@@ -136,15 +127,18 @@ void blinkDisp(char times) {
 }
 
 void brightness() {
-  ldrValue = (analogRead(LDR));
-  if (ldrValue <= LDR_MIN_THRES) {
-    brightValue = 10;
+  if (brightnessCount == 0 ){
+    ldrValue = (analogRead(LDR));
+    if (ldrValue <= LDR_MIN_THRES) {
+      brightValue = 10;
+    }
+    else if (ldrValue <= LDR_MAX_THRES) {
+      brightValue = map(ldrValue, LDR_MIN_THRES+1, LDR_MAX_THRES, 11, 255);
+    }
+    else {
+      brightValue = 255;
+    }
+    ledcWrite(PWM_CHAN, brightValue);
   }
-  else if (ldrValue <= LDR_MAX_THRES) {
-    brightValue = map(ldrValue, LDR_MIN_THRES+1, LDR_MAX_THRES, 11, 255);
-  }
-  else {
-    brightValue = 255;
-  }
-  ledcWrite(PWM_CHAN, brightValue);
+  brightnessCount++;
 }

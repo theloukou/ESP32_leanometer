@@ -5,6 +5,7 @@
 #include "SPI.h"
 #include "Preferences.h"
 #include "WiFi.h"
+#include "esp32/rom/rtc.h"
 #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
 #include "Wire.h"
 #endif
@@ -21,7 +22,6 @@
 #include "AsyncElegantOTA.h"
 #include "AsyncJson.h"
 #include "ArduinoJson.h"
-
 
 AsyncWebServer server(80);
 const char* ssid = "Leanometer_AP";
@@ -131,9 +131,8 @@ void setup() {
   Serial.println("Ready!");
 #endif
 
-  ledcWrite(PWM_CHAN, 25);
-
   //show vBat
+  brightness();
   batToDisp();
 
   //reset IMU FIFOs for clean start
