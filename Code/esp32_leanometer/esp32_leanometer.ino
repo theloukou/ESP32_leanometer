@@ -15,17 +15,16 @@
 #include "src/ShiftRegister74HC595.h"
 #include "src/I2Cdev.h"
 #include "src/MPU6050_6Axis_MotionApps612.h"
+#include "src/ElegantOTA.h"
 
 // Libs that need to be installed in IDE
 #include "RTClib.h"
 #include "ESPAsyncWebServer.h"
-#include "AsyncElegantOTA.h"
 #include "AsyncJson.h"
 #include "ArduinoJson.h"
 
+bool serverStopped = false;
 AsyncWebServer server(80);
-const char* ssid = "Leanometer_AP";
-const char* password = "1234567890";
 
 ShiftRegister74HC595<2> disp(SHIFT_REG_DATA, SHIFT_REG_CLOCK, SHIFT_REG_LATCH);
 MPU6050 IMU(0x69);
@@ -140,8 +139,12 @@ void setup() {
 }
 
 void loop() {
+  if (!serverStopped) {
+    ElegantOTA.loop();
+    serverStopped = checkServerStop();
+  }
+  
   // if IMU programming failed, don't try to do anything
-  AsyncElegantOTA.loop();
   if (!IMUReady) {
     return;  //halt if MPU is missing
   }
@@ -152,7 +155,7 @@ void loop() {
     IMUangles();
     //    IMUgforces();
     angleToDisp(angle);
-//    sdHandleLogs();
+    //    sdHandleLogs();
   }
 
   if (abs(angle) > maxAngle) {

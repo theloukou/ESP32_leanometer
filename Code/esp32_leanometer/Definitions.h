@@ -39,6 +39,6 @@
 #define LOG_PATH "/logs/"
 #define RESET_LOG_PATH "/resetLog.txt"
 
-/// OTA 
-//#define SSID "Leanometer_AP"
-// #define PASSWORD "yoyoyoyo"
+#define WIFI_SSID "Leanometer_AP"
+#define WIFI_PASSWORD "1234567890"
+#define WIFI_TIMEOUT 30000  //time in ms
